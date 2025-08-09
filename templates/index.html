@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="{{ session.get('idioma', 'es') }}">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ texts.title }}</title>
+</head>
+<body>
+    <h1>{{ texts.select_language }}</h1>
+    <form method="POST">
+        <select name="idioma">
+            {% for codigo, nombre in idiomas.items() %}
+                <option value="{{ codigo }}">{{ nombre }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">{{ texts.submit_button }}</button>
+    </form>
+</body>
+</html>
+

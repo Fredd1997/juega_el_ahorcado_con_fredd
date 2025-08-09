@@ -1,0 +1,22 @@
+<!-- templates/categorias.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ texts.select_category }}</title>
+</head>
+<body>
+    <h1>🗂️ {{ texts.select_category }}</h1>
+    <form method="post">
+        {% for key, name in texts.categories.items() %}
+            <label>
+                <input type="radio" name="categoria" value="{{ key }}" required>
+                {% if key == 'deportes' %}⚽{% elif key == 'autos' %}🚗{% elif key == 'paises' %}🌍{% elif key == 'biblia' %}📖{% endif %}
+                {{ name }}
+            </label><br><br>
+        {% endfor %}
+        <button type="submit">{{ texts.play }}</button>
+    </form>
+</body>
+</html>
+

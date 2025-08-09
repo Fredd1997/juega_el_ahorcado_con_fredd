@@ -1,0 +1,17 @@
+
+<!-- templates/perdiste.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perdiste</title>
+</head>
+<body>
+    <h1>😢 {{ texts.lose_message }}</h1>
+    <p>{{ texts.the_word_was }} {{ palabra }}</p>
+    <a href="{{ url_for('index') }}">{{ texts.play_again }}</a>
+
+
+</body>
+</html>
+

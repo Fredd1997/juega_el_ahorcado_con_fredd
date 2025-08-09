@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Jugar Ahorcado</title>
+</head>
+<body>
+    <h1>🔠 {{ texts.guess_word }}</h1>
+
+    <p>{{ texts.hidden_word }}</p>
+    <h2>{{ palabra_oculta }}</h2>
+
+    <p>{{ texts.select_letter }}</p>
+    <form method="post">
+        {% for letra in letras %}
+            {% if letra in usadas %}
+                <button type="submit" name="letra" value="{{ letra }}" disabled style="opacity: 0.5;">
+                    {{ letra.upper() }}
+                </button>
+            {% else %}
+                <button type="submit" name="letra" value="{{ letra }}">
+                    {{ letra.upper() }}
+                </button>
+            {% endif %}
+        {% endfor %}
+    </form>
+
+    <p>{{ texts.used_letters }}: {{ usadas | join(', ') }}</p>
+    <p>{{ texts.attempts }}: {{ intentos }} / 6</p>
+</body>
+</html>
