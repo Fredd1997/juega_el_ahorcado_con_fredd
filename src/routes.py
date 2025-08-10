@@ -46,7 +46,7 @@ def create_app():
         if not idioma or not categoria:
             return redirect(url_for('index'))
 
-        if 'palabra' not in session:
+        if not all(k in session for k in ('palabra', 'oculta', 'usadas', 'intentos')):
             palabra = obtener_palabra_aleatoria(idioma, categoria)
             session['palabra'] = palabra
             session['oculta'] = "_ " * len(palabra)
@@ -54,9 +54,7 @@ def create_app():
             session['intentos'] = 0
         else:
             palabra = session['palabra']
-            session['oculta'] = session.get('oculta', "_ " * len(palabra))
-            session['usadas'] = session.get('usadas', [])
-            session['intentos'] = session.get('intentos', 0)
+
 
         if request.method == "POST":
             letra = request.form.get("letra")
@@ -75,41 +73,34 @@ def create_app():
 
                 session['oculta'] = nueva_oculta.strip()
 
-        letras = list("abcdefghijklmnopqrstuvwxyz")
-
-        # Aquí agregas esta parte:
-        # Verificar si ganó
+        # Verificar victoria
         if "_" not in session['oculta']:
             return render_template("ganaste.html", palabra=session['palabra'], texts=texts.get(idioma, texts["es"]))
 
-
-        # Verificar si perdió
+        # Verificar derrota
         if session['intentos'] >= 6:
             return render_template("perdiste.html", palabra=session['palabra'], texts=texts.get(idioma, texts["es"]))
 
+        letras = list("abcdefghijklmnopqrstuvwxyz")
 
         return render_template("jugar.html",
-                       palabra_oculta=session['oculta'],
-                       letras=letras,
-                       usadas=session['usadas'],
-                       intentos=session['intentos'],
-                       texts=texts.get(idioma, texts["es"]))
+                            palabra_oculta=session['oculta'],
+                            letras=letras,
+                            usadas=session['usadas'],
+                            intentos=session['intentos'],
+                            texts=texts.get(idioma, texts["es"]))
+
 
     
     @app.route("/reiniciar")
     def reiniciar():
-        session.pop('palabra', None)
-        session.pop('oculta', None)
-        session.pop('usadas', None)
-        session.pop('intentos', None)
-        session.pop('categoria', None)
-        # Opcional: también idioma, si quieres que lo elija de nuevo
-        # session.pop('idioma', None)
-        return redirect(url_for('index'))  # <--- esto debe estar dentro de la función
+        session.clear()  # 💥 Esto borra todo lo que haya guardado
+        return redirect(url_for('index'))  # 🔁 Redirige a la página de inicio (selección de idioma)
 
 
-    
 
     return app  # Muy importante que esté al final
+
+
 
 
